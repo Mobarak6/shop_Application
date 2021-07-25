@@ -52,47 +52,55 @@ class _OrderItemState extends State<OrderItem> {
               ),
             ),
             if (_selected)
-              Container(
-                  height: min((widget.item.products.length + 1) * 20, 400),
-                  child: ListView.builder(
-                    itemBuilder: (context, i) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: mediaQuery.width * 0.30,
-                          child: Text(
-                            '${widget.item.products[i].title} ',
-                            style: TextStyle(
-                              fontSize: 15,
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Container(
+                    height: min((widget.item.products.length + 1) * 20, 400),
+                    child: ListView.builder(
+                      itemBuilder: (context, i) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: mediaQuery.width * 0.25,
+                            child: Text(
+                              '${widget.item.products[i].title} ',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: mediaQuery.width * 0.30,
-                          child: Text(
-                            'BDT-  ${widget.item.products[i].price} x ${widget.item.products[i].quentity}',
-                            style: TextStyle(
-                              fontSize: 14,
+                          SizedBox(
+                            width: mediaQuery.width * 0.25,
+                            child: Text(
+                              'BDT-  ${widget.item.products[i].price} x ${widget.item.products[i].quentity}',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          color: Colors.blue,
-                          width: mediaQuery.width * 0.25,
-                          child: Text(
-                            'BDT- ${widget.item.products[i].price * widget.item.products[i].quentity}',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              backgroundColor: Colors.blue,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            color: Colors.blue,
+                            width: mediaQuery.width * 0.30,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: FittedBox(
+                                child: Text(
+                                  'BDT- ${(widget.item.products[i].price * widget.item.products[i].quentity).toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    itemCount: widget.item.products.length,
-                  ))
+                        ],
+                      ),
+                      itemCount: widget.item.products.length,
+                    )),
+              )
           ],
         ),
       ),
