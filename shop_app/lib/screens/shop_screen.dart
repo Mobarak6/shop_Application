@@ -1,37 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/models/reloadingHandel.dart';
+import 'package:shop_app/providers/Authentication.dart';
+import 'package:shop_app/providers/products_provider.dart';
+
+import 'package:shop_app/widgets/dialog.dart';
 
 import '/screens/CartScreen.dart';
 import '/widgets/grid_Item.dart';
 
-enum FilterOption {
-  all,
-  favorit,
-}
+enum FilterOption { all, favorit, logOut }
 
 class ShopScreen extends StatefulWidget {
-  //static final routeName = '/ShopScreen_';
+  static final routeName = '/ShopScreen_';
   @override
   _ShopScreenState createState() => _ShopScreenState();
 }
 
 class _ShopScreenState extends State<ShopScreen> {
   var _showfavorit = false;
-  // int _selectedIndex = 0;
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
+
+  var _isLoading = true;
+  late Future _initFunction;
+
+  @override
+  void initState() {
+    _initFunction = _productFacthData().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    super.initState();
+  }
+  //CUPo9YtKHLZMPqUEMrNaS4PcMDz2
+
+  Future<void> _productFacthData() async {
+    await Provider.of<Products>(context, listen: false)
+        .facthData(
+      Provider.of<Authentication>(context, listen: false),
+    )
+        .catchError((error) {
+      DialogView.DialogViewFun(context, 'Something Wrong!').then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
+  }
+
+  Future<void> _onRefresh(BuildContext context) async {
+    ReloadingHandel.productHandel = true;
+    await _productFacthData();
+
+    // log('Referess Function call');
+  }
 
   @override
   Widget build(BuildContext context) {
-    //print('ShopScreen');
-    // final List<Widget> _widgetOptions = <Widget>[
-    //   GridItem(_showfavorit),
-    //   OrderScreen(),
-    //   UserProductScreen(),
-    // ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Shop'),
@@ -45,6 +71,19 @@ class _ShopScreenState extends State<ShopScreen> {
           PopupMenuButton(
               onSelected: (FilterOption value) {
                 setState(() {
+                  switch (value) {
+                    case FilterOption.favorit:
+                      _showfavorit = true;
+                      break;
+                    case FilterOption.logOut:
+                      Navigator.of(context).pushReplacementNamed('/');
+                      Provider.of<Authentication>(context, listen: false)
+                          .logOut();
+                      // Navigator.of(context).pop();
+                      break;
+                    default:
+                      _showfavorit = false;
+                  }
                   if (value == FilterOption.favorit) {
                     _showfavorit = true;
                   } else {
@@ -61,30 +100,21 @@ class _ShopScreenState extends State<ShopScreen> {
                       value: FilterOption.all,
                       child: Text('Show All'),
                     ),
+                    PopupMenuItem<FilterOption>(
+                      value: FilterOption.logOut,
+                      child: Text('Log-Out'),
+                    ),
                   ])
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   //backgroundColor: Theme.of(context).primaryColor,
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.shop),
-      //       label: 'Product',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.bookmark_outline),
-      //       label: 'Order',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.business),
-      //       label: 'My Product',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Colors.amber[800],
-      //   onTap: _onItemTapped,
-      // ),
-      body: GridItem(_showfavorit),
+      body: RefreshIndicator(
+        onRefresh: () => _onRefresh(context),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : GridItem(_showfavorit),
+      ),
     );
   }
 }

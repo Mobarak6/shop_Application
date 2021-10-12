@@ -17,8 +17,8 @@ class GridItem extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 3 / 2,
-          mainAxisSpacing: 50,
-          crossAxisSpacing: 50,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
           maxCrossAxisExtent: 200,
           mainAxisExtent: 300,
         ),

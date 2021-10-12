@@ -20,6 +20,7 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Card(
@@ -61,36 +62,46 @@ class _OrderItemState extends State<OrderItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: mediaQuery.width * 0.25,
+                            width: mediaQuery.width * 0.20,
                             child: Text(
                               '${widget.item.products[i].title} ',
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 12,
                               ),
                             ),
                           ),
                           SizedBox(
-                            width: mediaQuery.width * 0.25,
-                            child: Text(
-                              'BDT-  ${widget.item.products[i].price} x ${widget.item.products[i].quentity}',
-                              style: TextStyle(
-                                fontSize: 14,
+                            // width: (mediaQuery.width -
+                            //         (paddingSize.left + paddingSize.right)) *
+                            //     0.30,
+                            child: FittedBox(
+                              child: Text(
+                                'BDT-  ${widget.item.products[i].price} x ${widget.item.products[i].quentity}',
+                                // style: TextStyle(
+                                //   fontSize: 12,
+                                // ),
                               ),
                             ),
                           ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            color: Colors.blue,
-                            width: mediaQuery.width * 0.30,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: FittedBox(
-                                child: Text(
-                                  'BDT- ${(widget.item.products[i].price * widget.item.products[i].quentity).toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    backgroundColor: Colors.blue,
+                          FittedBox(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              color: Colors.blue,
+                              // width: (mediaQuery.width -
+                              //         (paddingSize.left + paddingSize.right)) *
+                              //     0.40,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: FittedBox(
+                                  child: FittedBox(
+                                    child: Text(
+                                      'BDT- ${(widget.item.products[i].price * widget.item.products[i].quentity).toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                        backgroundColor: Colors.blue,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

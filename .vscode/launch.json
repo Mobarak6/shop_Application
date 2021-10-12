@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (profile mode)",
+            "program": "lib/main.dart",
+            "cwd": "shop_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}

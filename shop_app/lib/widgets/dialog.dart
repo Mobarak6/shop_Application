@@ -4,11 +4,11 @@ class DialogView {
   late BuildContext context;
   //DialogView(this.context);
 
-  static Future<void> DialogViewFun(context) async {
+  static Future<void> DialogViewFun(context, String message) async {
     showDialog(
         context: context,
         builder: (BuildContext ctx) => AlertDialog(
-              title: const Text('Something Wrong!'),
+              title: Text(message),
               actions: [
                 TextButton(
                   child: const Text('Ok'),
